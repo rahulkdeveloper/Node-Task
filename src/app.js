@@ -5,9 +5,14 @@ dotenv.config();
 const port = Number(process.env.PORT) || 6000;
 const { dbConnection } = require('./db/conn');
 dbConnection();
+const morgan = require('morgan');
+const logger = require('./logger')
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("tiny"));
+
+
 
 app.get('/', async (request, response) => {
     response.send("hello world")
@@ -15,10 +20,17 @@ app.get('/', async (request, response) => {
 
 const authRouter = require('./router/authentication');
 const userRouter = require('./router/user');
-const multer = require("multer");
+const adminRouter = require('./router/admin');
+const bookRouter = require("./router/books");
+const orderRouter = require("./router/order");
 
 app.use("/api/authentication", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/admin", adminRouter);
+app.use("/api/books", bookRouter);
+app.use("/api/order", orderRouter);
+
+app.use(logger)
 
 app.use((err, request, response, next) => {
     console.log("err", err);

@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const { generate } = require('generate-password')
 
 
 async function hashPassword(password) {
@@ -9,4 +10,8 @@ async function comparePassword(password, hashPassword) {
     return await bcrypt.compare(password, hashPassword);
 }
 
-module.exports = { hashPassword, comparePassword }
+async function generatePassword(len) {
+    return await generate({ length: len, numbers: true });
+}
+
+module.exports = { hashPassword, comparePassword, generatePassword }

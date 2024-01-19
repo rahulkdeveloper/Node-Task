@@ -23,48 +23,68 @@ const schemas = {
     registerBody: Joi.object().keys({
         name: Joi.string().trim().required().min(3).max(20).required(),
         email: Joi.string().trim().email().required(),
-        mobile: Joi.string().required().length(10),
         password: Joi.string().required().min(6).max(30),
-        deviceDetails: Joi.object().keys({
-            deviceName: Joi.string().required(),
-            deviceUuid: Joi.string().required(),
-            deviceManufacturer: Joi.string().required(),
-            deviceVersion: Joi.string().required(),
-            deviceOs: Joi.string().required(),
-            ipAddress: Joi.string(),
-        }).required()
     })
         .unknown(true),
     loginBody: Joi.object().keys({
         email: Joi.string().trim().email().required(),
         password: Joi.string().required().min(6).max(30),
-        deviceDetails: Joi.object().keys({
-            deviceName: Joi.string().required(),
-            deviceUuid: Joi.string().required(),
-            deviceManufacturer: Joi.string().required(),
-            deviceVersion: Joi.string().required(),
-            deviceOs: Joi.string().required(),
-            ipAddress: Joi.string(),
-        }).required()
     })
         .unknown(true),
-    verifyAccountBody: Joi.object().keys({
-        type: Joi.number().valid(1, 2),
-        email: Joi.string().trim().email(),
-        otp: Joi.string().required().length(6),
-        mobile: Joi.string().length(10),
-    })
-        .unknown(true),
+    createUser: Joi.object().keys({
+        name: Joi.string().trim().required().min(3).max(20).required(),
+        email: Joi.string().trim().email().required(),
+        role: Joi.string().valid('admin', 'user'),
+    }),
     forgotPasswordBody: Joi.object().keys({
         email: Joi.string().trim().email().required(),
     })
         .unknown(true),
     resetPasswordBody: Joi.object().keys({
         email: Joi.string().trim().email().required(),
-        otp: Joi.string().required().length(6),
+        token: Joi.string().required(),
         newPassword: Joi.string().required().min(6).max(30),
     })
-        .unknown(true)
+        .unknown(true),
+    updateBookStatus: Joi.object().keys({
+        bookId: Joi.string().required(),
+        status: Joi.string().valid('approved', 'rejected'),
+    }),
+
+    addBook: Joi.object().keys({
+        publishedDate: Joi.date().required(),
+        title: Joi.string().trim().required().min(3).max(50),
+        genre: Joi.string().trim().required().min(3).max(50),
+        description: Joi.string().trim().required().min(3).max(100),
+        author: Joi.string().trim().required().min(3).max(50),
+        price: Joi.number().required(),
+        quantity: Joi.number().required()
+    })
+        .unknown(true),
+    updateBook: Joi.object().keys({
+        bookId: Joi.string().required(),
+        fields: Joi.object().keys({
+            publishedDate: Joi.date().required(),
+            title: Joi.string().trim().required().min(3).max(50),
+            genre: Joi.string().trim().required().min(3).max(50),
+            description: Joi.string().trim().required().min(3).max(100),
+            author: Joi.string().trim().required().min(3).max(50),
+            price: Joi.number().required(),
+            quantity: Joi.number().required()
+        }).required()
+    }),
+    createOrder: Joi.object().keys({
+        bookId: Joi.string().required(),
+        orderTotal: Joi.number().required(),
+        quantity: Joi.number().required(),
+        paymentMethod: Joi.string().valid('online', 'cod'),
+        address: Joi.object().keys({
+            street: Joi.string().trim().required().min(3).max(50),
+            city: Joi.string().trim().required().min(3).max(50),
+            State: Joi.string().trim().required().min(3).max(100),
+            pincode: Joi.number().required(),
+        }).required()
+    }),
 
 }
 
