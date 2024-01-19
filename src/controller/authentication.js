@@ -7,7 +7,6 @@ const {
     v4: uuidv4,
 } = require('uuid');
 const { sendEmail } = require('../service/email');
-const logger = require("../logger")
 
 exports.register = async (request, response) => {
     try {
@@ -51,7 +50,6 @@ exports.register = async (request, response) => {
 
 exports.login = async (request, response) => {
     try {
-        logger()
 
         const { email, password } = request.body;
 

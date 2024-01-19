@@ -6,11 +6,10 @@ const port = Number(process.env.PORT) || 6000;
 const { dbConnection } = require('./db/conn');
 dbConnection();
 const morgan = require('morgan');
-const logger = require('./logger')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 
 
 
@@ -30,7 +29,6 @@ app.use("/api/admin", adminRouter);
 app.use("/api/books", bookRouter);
 app.use("/api/order", orderRouter);
 
-app.use(logger)
 
 app.use((err, request, response, next) => {
     console.log("err", err);
