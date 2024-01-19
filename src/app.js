@@ -6,10 +6,11 @@ const port = Number(process.env.PORT) || 6000;
 const { dbConnection } = require('./db/conn');
 dbConnection();
 const morgan = require('morgan');
+const logger = require('./config/logger');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev"));
+app.use(morgan('combined', { stream: logger.stream }));
 
 
 
